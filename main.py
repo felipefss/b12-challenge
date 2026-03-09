@@ -1,6 +1,7 @@
 import hashlib
 import hmac
 import json
+import os
 from datetime import datetime, timezone
 import requests
 
@@ -8,21 +9,22 @@ import requests
 now = datetime.now(timezone.utc).isoformat(timespec="milliseconds")
 timestamp = now.replace("+00:00", "Z")
 
+github_action_run_link = os.environ.get("ACTION_RUN_LINK")
+
 payload = {
     "timestamp": timestamp,
     "name": "Felipe Santos",
     "email": "felipefss@gmail.com",
     "resume_link": "https://www.linkedin.com/in/felipefss/",
     "repository_link": "https://github.com/felipefss/b12-challenge",
-    "action_run_link": "https://link-to-github-or-another-forge.example.com/your/repository/actions/runs/run_id",
+    "action_run_link": github_action_run_link,
 }
 
 # compact JSON string (no extra whitespace): the API expects exactly this form
 payload_str = json.dumps(payload, separators=(",", ":"), sort_keys=True)
 
 # ---------- compute signature ----------
-# TODO: read this from os.environ in real use
-secret = b"hello-there-from-b12"         
+secret = os.environ.get("SIGNING_SECRET").encode()
 
 signature = hmac.new(
     secret,

@@ -8,4 +8,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
       - name: Run main.py
+        env: 
+          SIGNING_SECRET: ${{ secrets.SIGNING_SECRET }}
+          ACTION_RUN_LINK: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: python3 main.py
