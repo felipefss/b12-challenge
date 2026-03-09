@@ -44,4 +44,6 @@ headers = {
 response = requests.post(api_url, data=payload_str, headers=headers)
 if response.status_code == 200:
     body = response.json()
-    print("Receipt:", body.get("name"))
+    # receipt = body.get("receipt")
+    receipt = body.get("name")
+    print(f"Receipt: {receipt}")
